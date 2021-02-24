@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="logFile" source="logging.file"/>
+
+    <!--APPENDER CONFIGURATION FOR CONSOLE LOGGING -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-5level ${PID} [${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] [%thread] %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- APPENDERS DEFINITION -->
+    <appender name="LOG_SERVICE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFile}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logFile}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level ${PID} [${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] [%thread] %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--START ASYNC APPENDERS DEFINITION -->
+    <appender name="ASYNC_DEFAULT_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="console"/>
+    </appender>
+    <!--START ASYNC APPENDERS DEFINITION -->
+    <appender name="ASYNC_LOG_SERVICE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOG_SERVICE"/>
+    </appender>
+    <!--END ASYNC APPENDERS DEFINITION -->
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="ASYNC_LOG_SERVICE"/>
+    </root>
+</configuration>
