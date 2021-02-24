@@ -34,7 +34,7 @@ class PokeshakeE2E {
             .statusCode(200)
             .and()
             .body("name", equalTo("charizard"))
-            .body("description", equalTo("not implemented"))
+            .body("description", equalTo("shakespeare not implemented"))
     }
 
     private fun getPath(endpoint: String, pokemon: String): String = "$endpoint/$pokemon"
