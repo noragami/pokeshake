@@ -1,4 +1,4 @@
-package com.pokemon.pokeshake
+package com.pokemon.pokeshake.delivery
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

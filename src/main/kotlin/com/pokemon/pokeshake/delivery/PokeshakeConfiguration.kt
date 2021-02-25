@@ -1,4 +1,4 @@
-package com.pokemon.pokeshake
+package com.pokemon.pokeshake.delivery
 
 import com.pokemon.pokeshake.delivery.funtranslations.FunTranslationsShakespeareApiGateway
 import com.pokemon.pokeshake.delivery.pokeapi.PokeApiGateway
