@@ -77,6 +77,15 @@ instead of failing badly with a `500` response code. So we can keep the informat
 
 I also implemented a `404` response code if the client requests a Pokemon that doesn't exist.
 
+##### :lock: PokeApi 403 Forbidden error
+I encountered a problem during the integration of PokeApi. At first, every call returned a `403` error.
+
+Fun facts:
+ 1. API Documentation didn't help at all
+ 2. The same call worked using the browser
+
+Point 2 made me think that the only difference between the browser call and the console call was the user-agent.
+By setting up a dummy user-agent, the problem disappeared.
 
 ## :bulb: Improvement areas for production ready product
 

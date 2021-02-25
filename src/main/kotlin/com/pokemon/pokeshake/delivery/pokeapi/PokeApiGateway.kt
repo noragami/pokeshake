@@ -14,15 +14,20 @@ class PokeApiGateway(private val restTemplate: RestTemplate, private val endpoin
 
     override fun englishDescription(pokemonName: String): PokemonApiResponse {
         return try {
-            val response = restTemplate.exchange(getEndpoint(endpoint, pokemonName), GET, HttpEntity<Species>(headers()), Species::class.java)
-            PokemonApiResponse.Success(getDescription(response.body))
+            val response = restTemplate.exchange(
+                getEndpoint(endpoint, pokemonName),
+                GET,
+                HttpEntity<Species>(headers()),
+                Species::class.java
+            )
+            PokemonApiResponse.Success(getDescription(response.body!!))
         } catch (ex: RestClientException) {
             PokemonApiResponse.Failure(ex.localizedMessage)
         }
     }
 
-    private fun getDescription(body: Species?): String =
-        body?.entries?.first { it.language.name == "en" }?.text!!.removeUnwantedChars()
+    private fun getDescription(body: Species): String =
+        body.entries.first { it.language.name == "en" }.text.removeUnwantedChars()
 
     private fun String.removeUnwantedChars() = replace("\\s+".toRegex(), " ")
 
