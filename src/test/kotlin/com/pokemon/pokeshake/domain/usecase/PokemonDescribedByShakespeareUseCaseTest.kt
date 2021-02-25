@@ -1,8 +1,9 @@
 package com.pokemon.pokeshake.domain.usecase
 
 import com.nhaarman.mockito_kotlin.*
-import com.pokemon.pokeshake.domain.PokemonApiGateway
-import com.pokemon.pokeshake.domain.ShakespeareTranslatorApiGateway
+import com.pokemon.pokeshake.domain.gateway.PokemonApiGateway
+import com.pokemon.pokeshake.domain.gateway.PokemonApiResponse
+import com.pokemon.pokeshake.domain.gateway.ShakespeareTranslatorApiGateway
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -15,7 +16,7 @@ class PokemonDescribedByShakespeareUseCaseTest {
 
     @Before
     fun `setup mocks`() {
-        whenever(pokemonApiGateway.englishDescription(any())).thenReturn(POKEMON_DESCRIPTION)
+        whenever(pokemonApiGateway.englishDescription(any())).thenReturn(PokemonApiResponse.Success(POKEMON_DESCRIPTION))
         whenever(shakespeareTranslatorApiGateway.translate(any())).thenReturn(SHAKESPEARE_DESCRIPTION)
     }
 
@@ -39,6 +40,13 @@ class PokemonDescribedByShakespeareUseCaseTest {
         useCase.describe(POKEMON_NAME)
 
         verify(shakespeareTranslatorApiGateway, times(1)).translate(POKEMON_DESCRIPTION)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun `should throw IllegalArgumentException when PokemonApiResponse is Failure`() {
+        whenever(pokemonApiGateway.englishDescription(any())).thenReturn(PokemonApiResponse.Failure("failure"))
+
+        useCase.describe(POKEMON_NAME)
     }
 
     companion object {

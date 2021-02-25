@@ -1,4 +1,4 @@
-package com.pokemon.pokeshake.domain
+package com.pokemon.pokeshake.domain.gateway
 
 interface ShakespeareTranslatorApiGateway {
 

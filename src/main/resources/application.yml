@@ -2,5 +2,8 @@ spring:
   application:
     name: pokeshake
 
+pokeapi:
+  endpoint: https://pokeapi.co/api/v2/pokemon-species/
+
 logging:
   file: ${LOG_FOLDER:./logs}/${spring.application.name}
