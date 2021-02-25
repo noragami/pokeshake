@@ -5,6 +5,10 @@ My response to a software engineering challenge.
 
 To me, it was quite fun doing this challenge, I hope you'll have a good time looking at it!
 
+### :pencil2: The Task
+
+Develop a REST API that, given a Pokemon name, returns its Shakespearean description.
+
 ### :coffee: Technology stack
 
 * Main 
@@ -26,7 +30,7 @@ To me, it was quite fun doing this challenge, I hope you'll have a good time loo
 
 ### :toolbox: Prerequisites
 
-You'll either need [Docker](https://www.docker.com/), [Java 8](https://www.java.com/en/download/) and [Maven 3.5+](https://maven.apache.org/download.cgi) installed on your favourite OS.
+You'll need [Docker](https://www.docker.com/), [Java 8](https://www.java.com/en/download/) and [Maven 3.5+](https://maven.apache.org/download.cgi) installed on your favourite OS.
 
 ### :link: Clone source code
 
@@ -37,7 +41,9 @@ cd pokeshake
 
 ### :alembic: Run tests
 
-`mvn clean verify`
+```
+mvn clean verify
+```
 
 ### :video_game: Run application
 You can build/run the application packaged as JAR file via Maven and Java...
@@ -69,13 +75,14 @@ If you reach the quota limit, the API will send an http response code `429 - Too
 For this reason, I made the decision to forward the same http response code to the client,
 instead of failing badly with a `500` response code. So we can keep the information and provide the right feedback to the client.
 
-I also implemented a `404` response code if the client requests a pokemon that doesn't exist.
+I also implemented a `404` response code if the client requests a Pokemon that doesn't exist.
 
 
 ## :bulb: Improvement areas for production ready product
 
 - [ ] Document API using OpenAPI/Swagger (using Swagger UI)
-- [ ] Add a cache layer (all the requests are deterministic, same pokemon name -> same pokemon description, same description -> same Shakespeare description)
+- [ ] Add a cache layer (all the requests are deterministic, same Pokemon name -> same Pokemon description, same description -> same Shakespeare description)
 - [ ] We'd need a *premium/ultra*  Shakespeare translator API subscription
 - [ ] Add Spring Retry policy to automatically re-invoke a failed operation (on the integration side)
 - [ ] Add a circuit breaker to fail fast if all else fails
+- [ ] This is a single microservice, but in production you'll want a whole microservices ecosystem to scale the right way such as an api gateway/reverse proxy, a service locator, a config server...
