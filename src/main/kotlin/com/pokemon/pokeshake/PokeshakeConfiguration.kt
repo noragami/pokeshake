@@ -16,6 +16,9 @@ class PokeshakeConfiguration {
     @Value("\${pokeapi.endpoint}")
     private lateinit var pokeApiEndpoint: String
 
+    @Value("\${funtranslations.shakespeare.endpoint}")
+    private lateinit var funTranslationsShakespeareApiEndpoint: String
+
     @Bean
     fun restTemplate(): RestTemplate {
         return RestTemplate()
@@ -27,8 +30,8 @@ class PokeshakeConfiguration {
     }
 
     @Bean
-    fun shakespeareTranslatorApiGateway(): ShakespeareTranslatorApiGateway {
-        return FunTranslationsShakespeareApiGateway()
+    fun shakespeareTranslatorApiGateway(restTemplate: RestTemplate): ShakespeareTranslatorApiGateway {
+        return FunTranslationsShakespeareApiGateway(restTemplate, funTranslationsShakespeareApiEndpoint)
     }
 
     @Bean

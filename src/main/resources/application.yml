@@ -5,5 +5,9 @@ spring:
 pokeapi:
   endpoint: https://pokeapi.co/api/v2/pokemon-species/
 
+funtranslations:
+  shakespeare:
+    endpoint: https://api.funtranslations.com/translate/shakespeare.json
+
 logging:
   file: ${LOG_FOLDER:./logs}/${spring.application.name}
