@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
-import java.net.URLEncoder
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -69,8 +68,8 @@ class FunTranslationsShakespeareApiGatewayIntegrationTest {
     """.trimIndent()
 
     private fun stubResponse(status: Int, responseBody: String, stringToTranslate: String) {
-        val encodedString = URLEncoder.encode(stringToTranslate, "utf-8")
-        stubFor(post(urlEqualTo("/?text=$encodedString"))
+        stubFor(post(urlPathEqualTo("/"))
+            .withQueryParam("text", equalTo(stringToTranslate))
             .willReturn(aResponse()
                 .withStatus(status)
                 .withHeaders(HttpHeaders(

@@ -1,6 +1,7 @@
 package com.pokemon.pokeshake.e2e
 
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.http.HttpHeader
 import com.github.tomakehurst.wiremock.http.HttpHeaders
 import com.pokemon.pokeshake.PokeshakeApplication
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
-import java.net.URLEncoder
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -29,16 +29,16 @@ class PokeshakeE2ETest {
 
     @BeforeEach
     fun setup() {
-        WireMock.reset()
+        reset()
     }
 
     @Test
     fun `test known pokemon`() {
-        stubShakespeareResponse(200, okResponse(), STRING_TO_TRANSLATE)
+        stubShakespeareResponse(200, okResponse())
 
         RestAssured.given()
             .spec(requestSpecification())
-            .get(getPath(POKEMON_ENDPOINT, "charizard"))
+            .get("$POKEMON_ENDPOINT/charizard")
             .then()
             .assertThat()
             .statusCode(200)
@@ -49,11 +49,11 @@ class PokeshakeE2ETest {
 
     @Test
     fun `test known pokemon but quota limit reached`() {
-        stubShakespeareResponse(429, koResponse(), STRING_TO_TRANSLATE)
+        stubShakespeareResponse(429, koResponse())
 
         RestAssured.given()
             .spec(requestSpecification())
-            .get(getPath(POKEMON_ENDPOINT, "charizard"))
+            .get("$POKEMON_ENDPOINT/charizard")
             .then()
             .assertThat()
             .statusCode(429)
@@ -63,13 +63,11 @@ class PokeshakeE2ETest {
     fun `test unknown pokemon`() {
         RestAssured.given()
             .spec(requestSpecification())
-            .get(getPath(POKEMON_ENDPOINT, "monstermon"))
+            .get("$POKEMON_ENDPOINT/monstermon")
             .then()
             .assertThat()
             .statusCode(404)
     }
-
-    private fun getPath(endpoint: String, pokemon: String): String = "$endpoint/$pokemon"
 
     private fun requestSpecification(): RequestSpecification {
         return RequestSpecBuilder()
@@ -101,10 +99,10 @@ class PokeshakeE2ETest {
         }
     """.trimIndent()
 
-    private fun stubShakespeareResponse(status: Int, responseBody: String, stringToTranslate: String) {
-        val encodedString = URLEncoder.encode(stringToTranslate, "utf-8")
-        WireMock.stubFor(WireMock.post(WireMock.urlEqualTo("/?text=$encodedString"))
-            .willReturn(WireMock.aResponse()
+    private fun stubShakespeareResponse(status: Int, responseBody: String) {
+        stubFor(post(urlPathEqualTo("/"))
+            .withQueryParam("text", WireMock.equalTo(STRING_TO_TRANSLATE))
+            .willReturn(aResponse()
                 .withStatus(status)
                 .withHeaders(HttpHeaders(
                     HttpHeader.httpHeader("Content-Type", "application/json;charset=UTF-8"),

@@ -5,7 +5,6 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod.POST
 import org.springframework.web.client.RestTemplate
-import java.net.URLEncoder
 
 class FunTranslationsShakespeareApiGateway(private val restTemplate: RestTemplate, private val endpoint: String) : ShakespeareTranslatorApiGateway {
 
@@ -20,8 +19,7 @@ class FunTranslationsShakespeareApiGateway(private val restTemplate: RestTemplat
     }
 
     private fun getEndpoint(endpoint: String, stringToTranslate: String): String {
-        val encodedString = URLEncoder.encode(stringToTranslate, "utf-8")
-        return "$endpoint?text=$encodedString"
+        return "$endpoint?text=$stringToTranslate"
     }
 
     data class Result(
