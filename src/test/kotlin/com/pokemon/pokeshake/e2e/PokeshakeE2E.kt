@@ -23,7 +23,7 @@ class PokeshakeE2E {
     private val port = 0
 
     @Test
-    fun `test e2e`() {
+    fun `test known pokemon`() {
         RestAssured.given()
             .spec(requestSpecification())
             .get(getPath(POKEMON_ENDPOINT, "charizard"))
@@ -33,6 +33,16 @@ class PokeshakeE2E {
             .and()
             .body("name", equalTo("charizard"))
             .body("description", equalTo("shakespeare not implemented"))
+    }
+
+    @Test
+    fun `test unknown pokemon`() {
+        RestAssured.given()
+            .spec(requestSpecification())
+            .get(getPath(POKEMON_ENDPOINT, "monstermon"))
+            .then()
+            .assertThat()
+            .statusCode(404)
     }
 
     private fun getPath(endpoint: String, pokemon: String): String = "$endpoint/$pokemon"

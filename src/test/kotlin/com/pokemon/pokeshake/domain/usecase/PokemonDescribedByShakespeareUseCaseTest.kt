@@ -1,6 +1,7 @@
 package com.pokemon.pokeshake.domain.usecase
 
 import com.nhaarman.mockito_kotlin.*
+import com.pokemon.pokeshake.domain.exception.PokemonNotFoundException
 import com.pokemon.pokeshake.domain.gateway.PokemonApiGateway
 import com.pokemon.pokeshake.domain.gateway.PokemonApiResponse
 import com.pokemon.pokeshake.domain.gateway.ShakespeareTranslatorApiGateway
@@ -42,7 +43,7 @@ class PokemonDescribedByShakespeareUseCaseTest {
         verify(shakespeareTranslatorApiGateway, times(1)).translate(POKEMON_DESCRIPTION)
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test(expected = PokemonNotFoundException::class)
     fun `should throw IllegalArgumentException when PokemonApiResponse is Failure`() {
         whenever(pokemonApiGateway.englishDescription(any())).thenReturn(PokemonApiResponse.Failure("failure"))
 
