@@ -1,5 +1,6 @@
 package com.pokemon.pokeshake
 
+import com.pokemon.pokeshake.delivery.funtranslations.FunTranslationsShakespeareApiGateway
 import com.pokemon.pokeshake.delivery.pokeapi.PokeApiGateway
 import com.pokemon.pokeshake.domain.gateway.PokemonApiGateway
 import com.pokemon.pokeshake.domain.gateway.ShakespeareTranslatorApiGateway
@@ -27,11 +28,7 @@ class PokeshakeConfiguration {
 
     @Bean
     fun shakespeareTranslatorApiGateway(): ShakespeareTranslatorApiGateway {
-        return object : ShakespeareTranslatorApiGateway {
-            override fun translate(stringToTranslate: String): String {
-                return "shakespeare not implemented"
-            }
-        }
+        return FunTranslationsShakespeareApiGateway()
     }
 
     @Bean
