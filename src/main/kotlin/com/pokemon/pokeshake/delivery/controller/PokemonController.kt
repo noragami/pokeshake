@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.server.ResponseStatusException
 
 
@@ -21,6 +22,8 @@ class PokemonController(private val pokemonDescribedByShakespeareUseCase: Pokemo
             pokemonDescribedByShakespeareUseCase.describe(pokemonName)
         } catch (ex: PokemonNotFoundException) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "$pokemonName Not Found", ex)
+        } catch (ex: HttpClientErrorException.TooManyRequests) {
+            throw ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Quota limit reached", ex)
         }
     }
 }
