@@ -2,10 +2,10 @@ package com.pokemon.pokeshake.delivery.pokeapi
 
 import com.pokemon.pokeshake.domain.gateway.PokemonApiResponse
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.web.client.RestTemplate
 
-class PokeApiGatewayTestIT {
+class PokeApiGatewayIntegrationTest {
 
     private val restTemplate = RestTemplate()
     private val pokeApiGateway = PokeApiGateway(restTemplate, ENDPOINT)

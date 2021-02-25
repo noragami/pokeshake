@@ -6,8 +6,10 @@ import com.pokemon.pokeshake.domain.gateway.PokemonApiGateway
 import com.pokemon.pokeshake.domain.gateway.PokemonApiResponse
 import com.pokemon.pokeshake.domain.gateway.ShakespeareTranslatorApiGateway
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 
 class PokemonDescribedByShakespeareUseCaseTest {
 
@@ -15,7 +17,7 @@ class PokemonDescribedByShakespeareUseCaseTest {
     private val shakespeareTranslatorApiGateway = mock<ShakespeareTranslatorApiGateway>()
     private val useCase = PokemonDescribedByShakespeareUseCase(pokemonApiGateway, shakespeareTranslatorApiGateway)
 
-    @Before
+    @BeforeEach
     fun `setup mocks`() {
         whenever(pokemonApiGateway.englishDescription(any())).thenReturn(PokemonApiResponse.Success(POKEMON_DESCRIPTION))
         whenever(shakespeareTranslatorApiGateway.translate(any())).thenReturn(SHAKESPEARE_DESCRIPTION)
@@ -43,11 +45,11 @@ class PokemonDescribedByShakespeareUseCaseTest {
         verify(shakespeareTranslatorApiGateway, times(1)).translate(POKEMON_DESCRIPTION)
     }
 
-    @Test(expected = PokemonNotFoundException::class)
+    @Test
     fun `should throw IllegalArgumentException when PokemonApiResponse is Failure`() {
         whenever(pokemonApiGateway.englishDescription(any())).thenReturn(PokemonApiResponse.Failure("failure"))
 
-        useCase.describe(POKEMON_NAME)
+        assertThrows(PokemonNotFoundException::class.java) { useCase.describe(POKEMON_NAME) }
     }
 
     companion object {

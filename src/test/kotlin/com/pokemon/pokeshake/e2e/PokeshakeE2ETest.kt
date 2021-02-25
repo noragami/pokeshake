@@ -6,18 +6,15 @@ import io.restassured.builder.RequestSpecBuilder
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-@RunWith(SpringJUnit4ClassRunner::class)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = [PokeshakeApplication::class]
 )
-class PokeshakeE2E {
+class PokeshakeE2ETest {
 
     @LocalServerPort
     private val port = 0
